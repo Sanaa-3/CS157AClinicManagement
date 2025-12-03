@@ -5,7 +5,6 @@ Minh Tran
 Sanaa Stanezai
 
 Responsibilites:
-
 Alex Than
 - Added and adjusted the database schema (create_and_populate.sql) from Phase B submission.
 - Added sample data, the required SQL view, and stored procedure.
@@ -26,3 +25,6 @@ Zayba Syed – ai_log.md
 - Recorded and summarized all AI-assisted interactions used in the project.
 - Helped test and verify SQL features (view, stored procedure, constraints).
 - Assisted with validating program behavior and checking for input/SQL errors.
+
+Team Reflection:
+Our team worked collaboratively through shared documents, messaging and calls on discord, and screen-sharing sessions. Each member took ownership of a component while also assisting others when they ran into challenges. We communicated clearly about schema design, JDBC logic, and project requirements to ensure all parts worked together seamlessly. We feel confident that this project meets all specifications for Phase C and demonstrates strong teamwork, technical understanding, and attention to detail.
