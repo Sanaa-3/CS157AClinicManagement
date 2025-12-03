@@ -1,4 +1,19 @@
-OT NULL,
+CREATE TABLE InsurancePlan (
+    PlanID INT PRIMARY KEY AUTO_INCREMENT,
+    Provider VARCHAR(100) NOT NULL,
+    Coverage VARCHAR(200)
+);
+
+CREATE TABLE Hospital (
+    HospitalID INT PRIMARY KEY AUTO_INCREMENT, 
+    Name VARCHAR(100) NOT NULL,
+    Address VARCHAR(200) NOT NULL,
+    PhoneNumber VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Doctor (
+    DoctorID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
     Discipline VARCHAR(100),
     Email VARCHAR(100),
     PhoneNumber VARCHAR(20)
@@ -195,3 +210,4 @@ VALUES
 (2, 2, 2, '2025-11-11', '10:30:00', 'Flu symptoms', 120.00, 2),
 (3, 3, 3, '2025-11-12', '13:00:00', 'Skin rash evaluation', 90.00, 3),
 (4, 4, 1, '2025-11-13', '15:00:00', 'Knee pain consultation', 150.00, NULL);
+
