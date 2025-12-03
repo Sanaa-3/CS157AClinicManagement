@@ -16,6 +16,23 @@ CS157A_FinalProject_TeamName/
 
 Connection info:
 
-Database Setup:
+#Application built and run
+1. Create Database:
+    - Open MySQl workbench
+    - CREATE DATABASE clinicManagmnent
+    - USE clinicManagment
+    - Create required tables and coonstraints
+    - Populate tables
+    - Run SQL Script
 
+2. Setting Up app properties
+    - Change Url depending on host schema
+    - replace password with your own database credentials
+
+3. Compile Java files
+     - Compile DBUTIL to set up connection by parsing app properties 
+     - Use command: javac -cp ".;mysql-connector-j-9.5.0.jar" Main.java DBUtil.java
+
+4. Run
+     - Use command:  java -cp ".;mysql-connector-j-9.5.0.jar" Main
 
