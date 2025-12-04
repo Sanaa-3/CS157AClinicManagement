@@ -1,5 +1,11 @@
 CS157A Final Project – Clinical Database Management System
 
+Team Members:
+Alex Than
+Zayba Syed
+Minh Tran
+Sanaa Stanezai
+
 This project is a console-based Java application that connects to a MySQL database using JDBC.
 It supports viewing, inserting, updating, deleting records, and includes a transactional workflow with COMMIT and ROLLBACK to guarantee atomicity.
 
@@ -35,5 +41,6 @@ Connection info:
 
 4. Run
      - Use command:  java -cp ".;mysql-connector-j-9.5.0.jar" Main
+
 
 
