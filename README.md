@@ -34,6 +34,10 @@ Connection info:
 2. Setting Up app properties
     - Change Url depending on host schema
     - replace password with your own database credentials
+    - app properties should look like
+            db.url=jdbc:mysql://localhost:3306/clinical_management?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+            db.user=root
+            db.password=PasswordHere
 
 3. Compile Java files
      - Compile DBUTIL to set up connection by parsing app properties 
@@ -41,9 +45,9 @@ Connection info:
      - Use command for Mac: javac -cp ".:mysql-connector-j-9.5.0.jar" Main.java DBUtil.java
 
 4. Run
-     - Add to url: &allowPublicKeyRetrieval=true
      - Use command for Windows: java -cp ".;mysql-connector-j-9.5.0.jar" Main
      - Use command for Mac: java -cp ".:mysql-connector-j-9.5.0.jar" Main
+
 
 
 
