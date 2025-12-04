@@ -29,10 +29,10 @@ Connection info:
 #Application built and run
 1. Create Database:
     - Open MySQl workbench
-    - CREATE DATABASE clinicManagement
-    - USE clinicManagement
-    - Create required tables and constraints
-    - Populate tables
+    - CREATE DATABASE clinical_management if it doesn't already exist
+    - Open new query tab
+    - Write USE clinical_management on line one
+    - Navigate to File -> Open SQL Script -> create_and_populate.sql
     - Run SQL Script
 
 2. Setting Up app properties
@@ -44,14 +44,14 @@ Connection info:
             db.password=PasswordHere
 
 3. Compile Java files
-     - Use command for Windows: javac -cp ".;mysql-connector-j-9.5.0.jar" Main.java
-     - Use command for Mac: javac -cp ".:mysql-connector-j-9.5.0.jar" Main.java
+     - Use command for Windows Powershell: javac -cp ".;mysql-connector-j-9.5.0.jar" Main.java
+     - Use command for Mac base terminal: javac -cp ".:mysql-connector-j-9.5.0.jar" Main.java
 
 4. Run
-     - Use command for Windows: java -cp ".;mysql-connector-j-9.5.0.jar" Main
-     - Use command for Mac: java -cp ".:mysql-connector-j-9.5.0.jar" Main
+     - Use command for Windows Powershell: java -cp ".;mysql-connector-j-9.5.0.jar" Main
+     - Use command for Mac base terminal: java -cp ".:mysql-connector-j-9.5.0.jar" Main
 
-5. If the connection is successful, the console prints: "Connected to DB."
+5. If the connection is successful, the console prints: "MySQL JDBC Driver loaded successfully."
 <img width="964" height="56" alt="Screenshot 2025-12-03 at 9 04 33 PM" src="https://github.com/user-attachments/assets/a4daa729-cef2-4b3f-b9e6-29312f095f37" />
 
 
@@ -99,6 +99,7 @@ MySQL Server: 8.0
 MySQL Workbench: 8.0
 MySQL Connector/J: 8.4.0 (or any 8.x)
 Java Version: Java 17+ recommended
+
 
 
 
