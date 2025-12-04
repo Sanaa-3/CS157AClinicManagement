@@ -14,7 +14,7 @@ It supports viewing, inserting, updating, deleting records, and includes a trans
 
 
 # Project Structure
-CS157A_FinalProject_TeamName/
+CS157A_FinalProject_G4\` \`
 │
 ├── Main.java # Java console app with menu + JDBC + transactions
 ├── create_and_populate.sql # All CREATE TABLE, INSERT sample data, view, procedure
@@ -23,6 +23,7 @@ CS157A_FinalProject_TeamName/
 ├── ai_log.md # AI collaboration record
 ├── Team-roles.txt # Member contributions + reflections
 └── video_demo.mp4 # Screen-recorded demo (≤ 6 minutes)
+\` \`
 
 
 # Connection info:
@@ -109,4 +110,5 @@ Otherwise: **COMMIT**
 - MySQL Workbench: 8.0  
 - MySQL Connector/J: 8.4.0 (or any 8.x)  
 - Java Version: Java 17+ recommended  
+
 
