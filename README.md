@@ -29,8 +29,8 @@ Connection info:
 #Application built and run
 1. Create Database:
     - Open MySQl workbench
-    - CREATE DATABASE clinicManagmnent
-    - USE clinicManagment
+    - CREATE DATABASE clinicManagement
+    - USE clinicManagement
     - Create required tables and constraints
     - Populate tables
     - Run SQL Script
@@ -99,6 +99,7 @@ MySQL Server: 8.0
 MySQL Workbench: 8.0
 MySQL Connector/J: 8.4.0 (or any 8.x)
 Java Version: Java 17+ recommended
+
 
 
 
