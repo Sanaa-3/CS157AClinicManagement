@@ -21,19 +21,19 @@ public class Main {
                 int choice = readInt("Choose an option: ");
 
                 switch (choice) {
-                    case 1 -> viewPatients(conn);                      // SELECT (Patient)
-                    case 2 -> viewDoctors(conn);                       // SELECT (Doctor)
-                    case 3 -> viewHospitals(conn);                     // SELECT (Hospital)
-                    case 4 -> viewPatientMedicationView(conn);         // VIEW
-                    case 5 -> insertMedication(conn);                  // INSERT
-                    case 6 -> updatePatient(conn);                     // UPDATE
-                    case 7 -> deletePatient(conn);                     // DELETE
-                    case 8 -> scheduleAppointmentWithProc(conn);       // Stored Procedure
-                    case 9 -> transactionTransferDoctorHospital(conn); // Transaction
-                    case 0 -> {
-                        System.out.println("Exiting...");
-                        running = false;
-                    }
+                    case 1 -> viewPatients(conn);
+                    case 2 -> viewDoctors(conn);
+                    case 3 -> viewHospitals(conn);
+                    case 4 -> viewMedications(conn);                  
+                    case 5 -> viewPatientMedicationView(conn);
+                    case 6 -> insertMedication(conn);
+                    case 7 -> updatePatient(conn);
+                    case 8 -> deletePatient(conn);
+                    case 9 -> scheduleAppointmentWithProc(conn);
+                    case 10 -> transactionTransferDoctorHospital(conn);
+                    case 11 -> viewAppointments(conn);
+                    case 12 -> viewDoctorHospital(conn);
+                    case 0 -> { System.out.println("Exiting..."); running = false; }
                     default -> System.out.println("Invalid choice, try again.");
                 }
             }
@@ -76,14 +76,18 @@ public class Main {
         System.out.println("1. View Patients");
         System.out.println("2. View Doctors");
         System.out.println("3. View Hospitals");
-        System.out.println("4. View Patient Medications (VIEW)");
-        System.out.println("5. Insert Medication");
-        System.out.println("6. Update Patient");
-        System.out.println("7. Delete Patient");
-        System.out.println("8. Schedule Appointment (Stored Procedure)");
-        System.out.println("9. Transaction: Transfer Doctor to New Hospital (COMMIT/ROLLBACK)");
+        System.out.println("4. View Medications");             // <-- NEW
+        System.out.println("5. View Patient Medications (VIEW)");
+        System.out.println("6. Insert Medication");
+        System.out.println("7. Update Patient");
+        System.out.println("8. Delete Patient");
+        System.out.println("9. Schedule Appointment (Stored Procedure)");
+        System.out.println("10. Transaction: Transfer Doctor to New Hospital (COMMIT/ROLLBACK)");
+        System.out.println("11. View Appointments");
+        System.out.println("12. View Doctor-Hospital Assignments");
         System.out.println("0. Exit");
     }
+
 
     // ===== Input validation helpers =====
 
@@ -127,7 +131,7 @@ public class Main {
         }
     }
 
-    // ===== SELECTs for 3 key tables =====
+    // ===== SELECTs for 4 key tables =====
 
     private static void viewPatients(Connection conn) {
         String sql = "SELECT PatientID, Name, Birthdate, Email, PhoneNumber, Address, PlanID FROM Patient";
@@ -184,6 +188,78 @@ public class Main {
             }
         } catch (SQLException e) {
             System.err.println("Error viewing hospitals: " + e.getMessage());
+        }
+    }
+
+    private static void viewMedications(Connection conn) {
+        String sql = "SELECT MedicationID, PatientID, DoctorID, Name, Cost, Status, Dosage, Frequency, PlanID " +
+                    "FROM Medication";
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+
+            System.out.println("\n--- Medications ---");
+            while (rs.next()) {
+                System.out.printf(
+                    "MedID: %d | PatientID: %d | DoctorID: %d | Name: %s | Cost: %.2f | Status: %s | Dosage: %s | Frequency: %s | PlanID: %s%n",
+                    rs.getInt("MedicationID"),
+                    rs.getInt("PatientID"),
+                    rs.getInt("DoctorID"),
+                    rs.getString("Name"),
+                    rs.getDouble("Cost"),
+                    rs.getString("Status"),
+                    rs.getString("Dosage"),
+                    rs.getString("Frequency"),
+                    rs.getString("PlanID")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error viewing medications: " + e.getMessage());
+        }
+    }
+
+    private static void viewAppointments(Connection conn) {
+        String sql = "SELECT PatientID, DoctorID, HospitalID, ApptDate, ApptTime, VisitReason, Cost, PlanID " +
+                     "FROM Appointment";
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            System.out.println("\n--- Appointments ---");
+            while (rs.next()) {
+                System.out.printf(
+                    "PatientID: %d | DoctorID: %d | HospitalID: %d | Date: %s | Time: %s | Reason: %s | Cost: %.2f%n | PlanID: %d",
+                    rs.getInt("PatientID"),
+                    rs.getInt("DoctorID"),
+                    rs.getInt("HospitalID"),
+                    rs.getDate("ApptDate"),
+                    rs.getTime("ApptTime"),
+                    rs.getString("VisitReason"),
+                    rs.getDouble("Cost"),
+                    rs.getInt("PlanID")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error viewing appointments: " + e.getMessage());
+        }
+    }
+
+    private static void viewDoctorHospital(Connection conn) {
+        String sql = "SELECT DoctorID, HospitalID FROM DoctorHospital";
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            System.out.println("\n--- Doctor-Hospital Assignments ---");
+            while (rs.next()) {
+                System.out.printf(
+                    "DoctorID: %d | HospitalID: %d%n",
+                    rs.getInt("DoctorID"),
+                    rs.getInt("HospitalID")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error viewing doctor-hospital assignments: " + e.getMessage());
         }
     }
 
@@ -261,30 +337,122 @@ public class Main {
 
     // ===== UPDATE & DELETE =====
 
-    private static void updatePatient(Connection conn) {
+        private static void updatePatient(Connection conn) {
         System.out.println("\n--- Update Patient ---");
         int id = readInt("Enter PatientID to update: ");
 
-        String newAddress = readNonEmpty("New address: ");
-        String newPhone   = readNonEmpty("New phone: ");
+        String selectSql = "SELECT Name, Birthdate, Email, PhoneNumber, Address, PlanID FROM Patient WHERE PatientID = ?";
 
-        String sql = "UPDATE Patient SET Address = ?, PhoneNumber = ? WHERE PatientID = ?";
+        try {
+            String currentName;
+            Date currentBirthdate;
+            String currentEmail;
+            String currentPhone;
+            String currentAddress;
+            Integer currentPlanId;
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, newAddress);
-            ps.setString(2, newPhone);
-            ps.setInt(3, id);
+            // Load current values
+            try (PreparedStatement selectPs = conn.prepareStatement(selectSql)) {
+                selectPs.setInt(1, id);
+                try (ResultSet rs = selectPs.executeQuery()) {
+                    if (!rs.next()) {
+                        System.out.println("No patient found with that ID.");
+                        return;
+                    }
+                    currentName = rs.getString("Name");
+                    currentBirthdate = rs.getDate("Birthdate");
+                    currentEmail = rs.getString("Email");
+                    currentPhone = rs.getString("PhoneNumber");
+                    currentAddress = rs.getString("Address");
+                    int planVal = rs.getInt("PlanID");
+                    currentPlanId = rs.wasNull() ? null : planVal;
+                }
+            }
 
-            int rows = ps.executeUpdate();
-            if (rows == 0) {
-                System.out.println("No patient found with that ID.");
-            } else {
-                System.out.println("Updated " + rows + " patient(s).");
+            System.out.println("Press Enter to keep the current value shown in brackets.");
+
+            // Name
+            System.out.print("Name [" + currentName + "]: ");
+            String nameInput = scanner.nextLine().trim();
+            String newName = nameInput.isEmpty() ? currentName : nameInput;
+
+            // Birthdate
+            String birthStr = (currentBirthdate != null) ? currentBirthdate.toString() : "NULL";
+            System.out.print("Birthdate (YYYY-MM-DD) [" + birthStr + "]: ");
+            String birthInput = scanner.nextLine().trim();
+            Date newBirthdate = currentBirthdate;
+            if (!birthInput.isEmpty()) {
+                try {
+                    newBirthdate = Date.valueOf(birthInput);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid date format, keeping existing birthdate.");
+                }
+            }
+
+            // Email
+            System.out.print("Email [" + currentEmail + "]: ");
+            String emailInput = scanner.nextLine().trim();
+            String newEmail = emailInput.isEmpty() ? currentEmail : emailInput;
+
+            // Phone
+            System.out.print("PhoneNumber [" + currentPhone + "]: ");
+            String phoneInput = scanner.nextLine().trim();
+            String newPhone = phoneInput.isEmpty() ? currentPhone : phoneInput;
+
+            // Address
+            System.out.print("Address [" + currentAddress + "]: ");
+            String addrInput = scanner.nextLine().trim();
+            String newAddress = addrInput.isEmpty() ? currentAddress : addrInput;
+
+            // PlanID
+            String planStr = (currentPlanId != null) ? currentPlanId.toString() : "NULL";
+            System.out.print("PlanID [" + planStr + "]: ");
+            String planInput = scanner.nextLine().trim();
+            Integer newPlanId = currentPlanId;
+            if (!planInput.isEmpty()) {
+                try {
+                    newPlanId = Integer.valueOf(planInput);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid PlanID, keeping existing value.");
+                }
+            }
+
+            String updateSql = "UPDATE Patient SET Name = ?, Birthdate = ?, Email = ?, PhoneNumber = ?, Address = ?, PlanID = ? " +
+                               "WHERE PatientID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(updateSql)) {
+                ps.setString(1, newName);
+
+                if (newBirthdate == null) {
+                    ps.setNull(2, Types.DATE);
+                } else {
+                    ps.setDate(2, newBirthdate);
+                }
+
+                ps.setString(3, newEmail);
+                ps.setString(4, newPhone);
+                ps.setString(5, newAddress);
+
+                if (newPlanId == null) {
+                    ps.setNull(6, Types.INTEGER);
+                } else {
+                    ps.setInt(6, newPlanId);
+                }
+
+                ps.setInt(7, id);
+
+                int rows = ps.executeUpdate();
+                if (rows == 0) {
+                    System.out.println("No patient found with that ID.");
+                } else {
+                    System.out.println("Updated " + rows + " patient(s).");
+                }
             }
         } catch (SQLException e) {
             System.err.println("Error updating patient: " + e.getMessage());
         }
     }
+
 
     private static void deletePatient(Connection conn) {
         System.out.println("\n--- Delete Patient ---");
