@@ -10,8 +10,7 @@
 This project is a console-based Java application that connects to a MySQL database using JDBC.  
 It supports viewing, inserting, updating, deleting records, and includes a transactional workflow with COMMIT and ROLLBACK to guarantee atomicity.
 
-<img width="1065" height="246" alt="Screenshot 2025-12-03 at 9 06 21 PM" src="https://github.com/user-attachments/assets/3e319b3f-f5a4-4718-a665-9e4588a83be0" />
-
+<img width="669" height="399" alt="Console App Menu" src="https://github.com/user-attachments/assets/e56fffe9-ed52-4089-9fe0-0e1190185a9a" />
 
 # Project Structure
 
@@ -112,6 +111,7 @@ Otherwise: **COMMIT**
 - MySQL Workbench: 8.0  
 - MySQL Connector/J: 8.4.0 (or any 8.x)  
 - Java Version: Java 17+ recommended  
+
 
 
 
