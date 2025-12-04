@@ -21,7 +21,7 @@ Connection info:
     - Open MySQl workbench
     - CREATE DATABASE clinicManagmnent
     - USE clinicManagment
-    - Create required tables and coonstraints
+    - Create required tables and constraints
     - Populate tables
     - Run SQL Script
 
@@ -35,4 +35,5 @@ Connection info:
 
 4. Run
      - Use command:  java -cp ".;mysql-connector-j-9.5.0.jar" Main
+
 
