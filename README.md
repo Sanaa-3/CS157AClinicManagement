@@ -37,13 +37,14 @@ Connection info:
 
 3. Compile Java files
      - Compile DBUTIL to set up connection by parsing app properties 
-     - Use command on Windows: javac -cp ".;mysql-connector-j-9.5.0.jar" Main.java DBUtil.java
-     - Use command on Mac: javac -cp ".:mysql-connector-j-9.5.0.jar" Main.java DBUtil.java
+     - Use command for Windows: javac -cp ".;mysql-connector-j-9.5.0.jar" Main.java DBUtil.java
+     - Use command for Mac: javac -cp ".:mysql-connector-j-9.5.0.jar" Main.java DBUtil.java
 
 4. Run
      - Add to url: &allowPublicKeyRetrieval=true
-     - Use command: java -cp ".;mysql-connector-j-9.5.0.jar" Main
-     - Use command: java -cp ".:mysql-connector-j-9.5.0.jar" Main
+     - Use command for Windows: java -cp ".;mysql-connector-j-9.5.0.jar" Main
+     - Use command for Mac: java -cp ".:mysql-connector-j-9.5.0.jar" Main
+
 
 
 
