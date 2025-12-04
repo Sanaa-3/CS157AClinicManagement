@@ -44,7 +44,8 @@ Connection info:
             db.password=PasswordHere
 
 3. Compile Java files
-     - Compile Java files
+     - Use command for Windows: javac -cp ".;mysql-connector-j-9.5.0.jar" Main.java
+     - Use command for Mac: javac -cp ".:mysql-connector-j-9.5.0.jar" Main.java
 
 4. Run
      - Use command for Windows: java -cp ".;mysql-connector-j-9.5.0.jar" Main
@@ -98,5 +99,6 @@ MySQL Server: 8.0
 MySQL Workbench: 8.0
 MySQL Connector/J: 8.4.0 (or any 8.x)
 Java Version: Java 17+ recommended
+
 
 
