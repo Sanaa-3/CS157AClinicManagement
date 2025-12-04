@@ -48,6 +48,55 @@ Connection info:
      - Use command for Windows: java -cp ".;mysql-connector-j-9.5.0.jar" Main
      - Use command for Mac: java -cp ".:mysql-connector-j-9.5.0.jar" Main
 
+5. If the connection is successful, the console prints: "Connected to DB."
+<img width="964" height="56" alt="Screenshot 2025-12-03 at 9 04 33 PM" src="https://github.com/user-attachments/assets/a4daa729-cef2-4b3f-b9e6-29312f095f37" />
+
+
+How the Application Was Built (Step-by-Step)
+1. Database Schema Design
+Built using MySQL Workbench
+Added tables such as Patient, Doctor, Medication, Appointment, Plan
+Applied primary keys, foreign keys, UNIQUE constraints, CHECK constraints
+Inserted sample records needed for testing
+
+2. JDBC Setup
+Loaded MySQL driver 
+Created DBUtil.getConnection() to read from app.properties
+Verified connectivity before implementing logic
+
+3. Console Menu + Scanner
+The menu in Main.java supports:
+View Patients
+View Doctors
+View Medications (from VIEW)
+
+Insert Medication
+Update Patient
+Delete Patient
+Schedule Appointment (Stored Procedure)
+Transaction Workflow (Commit/Rollback)
+
+4. PreparedStatements Everywhere
+All SQL operations use PreparedStatement to avoid SQL injection and to bind inputs safely.
+
+5. Transaction Workflow
+We created a combined workflow:
+Schedule an appointment (via stored procedure)
+Insert a medication for the same visit
+If any part fails (e.g., constraint violation), the system: ROLLBACK
+Otherwise: COMMIT
+
+6. Input Validation + Error Handling
+Validated integers, doubles, empty input
+Provided detailed SQLException messages
+Checked foreign key and CHECK constraint violations
+
+MySQL & JDBC Versions
+MySQL Server: 8.0
+MySQL Workbench: 8.0
+MySQL Connector/J: 8.4.0 (or any 8.x)
+Java Version: Java 17+ recommended
+
 
 
 
