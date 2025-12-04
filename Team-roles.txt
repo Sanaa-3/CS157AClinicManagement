@@ -14,7 +14,7 @@ Minh Tran
 - Wrote the entire Java console application using JDBC and PreparedStatements.
 - Implemented the menu, operations, input handling, and error checking.
 - Built the transactional workflow demonstrating COMMIT and ROLLBACK.
-- prepared the demo flow for the final video.
+- Prepared the demo flow for the final video.
 
 Sanaa Stanezai – README.md
 - Wrote the main project documentation (README.md and Team-roles.txt).
