@@ -82,23 +82,29 @@ java -cp ".:mysql-connector-j-9.5.0.jar" Main
 
 The menu in Main.java supports:
 - View Patients  
-- View Doctors  
-- View Medications (from VIEW)  
+- View Doctors
+- View Hospitals
+- Viwe Medications 
+- View PatientMedications (a View)  
 - Insert Medication  
 - Update Patient  
 - Delete Patient  
 - Schedule Appointment (Stored Procedure)  
-- Transaction Workflow (Commit/Rollback)  
+- Transactional Workflow - Transfer Doctor to New Hospital (Commit/Rollback)
+- View Appointments
+- View DoctorHospital Assignments
 
-## 4. PreparedStatements Everywhere
+## 4. PreparedStatements
 - All SQL operations use PreparedStatement to avoid SQL injection and to bind inputs safely.  
 
-## 5. Transaction Workflow
+## 5. Transactional Workflow
 We created a combined workflow:
-- Schedule an appointment (via stored procedure)  
-- Insert a medication for the same visit  
+- Check if a DoctorID is attached to a valid row in Doctor
+- Check if a current HospitalID is attached to a valid row in Hospital
+- Check if a new HospitalID is attached to a valid row in Hospital
+- Update row containing DoctorID, current HospitalID to become DoctorID, new HospitalID
 
-If any part fails (e.g., constraint violation), the system: **ROLLBACK**  
+If any part fails (e.g. foreign key doesn't exist in host table), the system: **ROLLBACK**  
 Otherwise: **COMMIT**  
 
 ## 6. Input Validation + Error Handling
@@ -111,6 +117,7 @@ Otherwise: **COMMIT**
 - MySQL Workbench: 8.0  
 - MySQL Connector/J: 8.4.0 (or any 8.x)  
 - Java Version: Java 17+ recommended  
+
 
 
 
