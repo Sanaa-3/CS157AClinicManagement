@@ -169,7 +169,7 @@ public class Main {
         }
     }
 
-    // NEW: Hospital SELECT to satisfy "3 key tables each have SELECT"
+    // Hospital SELECT to satisfy "3 key tables each have SELECT"
     private static void viewHospitals(Connection conn) {
         String sql = "SELECT HospitalID, Name, Address, PhoneNumber FROM Hospital";
         try (PreparedStatement ps = conn.prepareStatement(sql);
