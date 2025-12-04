@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    // ===== JDBC CONFIG / DBUtil MERGED =====
+    // ===== Connect to DB =====
     private static final String PROPERTIES_FILE = "app.properties";
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -21,15 +21,15 @@ public class Main {
                 int choice = readInt("Choose an option: ");
 
                 switch (choice) {
-                    case 1 -> viewPatients(conn);                     // SELECT (Patient)
-                    case 2 -> viewDoctors(conn);                      // SELECT (Doctor)
-                    case 3 -> viewHospitals(conn);                    // SELECT (Hospital) - 3rd key table
-                    case 4 -> viewPatientMedicationView(conn);        // VIEW
-                    case 5 -> insertMedication(conn);                 // INSERT
-                    case 6 -> updatePatient(conn);                    // UPDATE
-                    case 7 -> deletePatient(conn);                    // DELETE
-                    case 8 -> scheduleAppointmentWithProc(conn);      // Stored Procedure
-                    case 9 -> transactionTransferDoctorHospital(conn);// Transaction (COMMIT + ROLLBACK)
+                    case 1 -> viewPatients(conn);                      // SELECT (Patient)
+                    case 2 -> viewDoctors(conn);                       // SELECT (Doctor)
+                    case 3 -> viewHospitals(conn);                     // SELECT (Hospital)
+                    case 4 -> viewPatientMedicationView(conn);         // VIEW
+                    case 5 -> insertMedication(conn);                  // INSERT
+                    case 6 -> updatePatient(conn);                     // UPDATE
+                    case 7 -> deletePatient(conn);                     // DELETE
+                    case 8 -> scheduleAppointmentWithProc(conn);       // Stored Procedure
+                    case 9 -> transactionTransferDoctorHospital(conn); // Transaction
                     case 0 -> {
                         System.out.println("Exiting...");
                         running = false;
@@ -44,7 +44,7 @@ public class Main {
 
     /**
      * Loads app.properties, loads MySQL JDBC driver, and opens a Connection.
-     * This covers Step 1: JDBC Setup and Connection Test.
+     * Step 1: JDBC Setup and Connection Test.
      */
     private static Connection getConnection() throws SQLException {
         Properties props = new Properties();
@@ -69,7 +69,7 @@ public class Main {
         return DriverManager.getConnection(url, user, password);
     }
 
-    // ===== MENU (Step 2 order: view -> insert -> update -> delete -> transaction) =====
+    // ===== MENU =====
 
     private static void printMenu() {
         System.out.println("\n==== Clinical Management System (G4) ====");
@@ -85,7 +85,7 @@ public class Main {
         System.out.println("0. Exit");
     }
 
-    // ===== Input validation helpers (Step 5) =====
+    // ===== Input validation helpers =====
 
     private static int readInt(String prompt) {
         while (true) {
@@ -127,7 +127,7 @@ public class Main {
         }
     }
 
-    // ===== SELECTs for 3 key tables: Patient, Doctor, Hospital (Step 2/3) =====
+    // ===== SELECTs for 3 key tables =====
 
     private static void viewPatients(Connection conn) {
         String sql = "SELECT PatientID, Name, Birthdate, Email, PhoneNumber, Address, PlanID FROM Patient";
@@ -169,7 +169,6 @@ public class Main {
         }
     }
 
-    // Hospital SELECT to satisfy "3 key tables each have SELECT"
     private static void viewHospitals(Connection conn) {
         String sql = "SELECT HospitalID, Name, Address, PhoneNumber FROM Hospital";
         try (PreparedStatement ps = conn.prepareStatement(sql);
@@ -188,7 +187,7 @@ public class Main {
         }
     }
 
-    // ===== VIEW (Step 6: one VIEW) =====
+    // ===== VIEW =====
 
     private static void viewPatientMedicationView(Connection conn) {
         String sql = "SELECT * FROM PatientMedicationView";
@@ -213,7 +212,7 @@ public class Main {
         }
     }
 
-    // ===== INSERT (PreparedStatement, Step 3) =====
+    // ===== INSERT =====
 
     private static void insertMedication(Connection conn) {
         System.out.println("\n--- Insert Medication ---");
@@ -257,14 +256,10 @@ public class Main {
             System.out.println("Inserted " + rows + " medication record(s).");
         } catch (SQLException e) {
             System.err.println("Error inserting medication: " + e.getMessage());
-            if ("23000".equals(e.getSQLState())) {
-                System.out.println("Constraint violation (FK/CHECK). " +
-                        "Check patient/doctor IDs, cost range, and status value.");
-            }
         }
     }
 
-    // ===== UPDATE & DELETE (PreparedStatement, Step 3) =====
+    // ===== UPDATE & DELETE =====
 
     private static void updatePatient(Connection conn) {
         System.out.println("\n--- Update Patient ---");
@@ -307,13 +302,10 @@ public class Main {
             }
         } catch (SQLException e) {
             System.err.println("Error deleting patient: " + e.getMessage());
-            if ("23000".equals(e.getSQLState())) {
-                System.out.println("Cannot delete: this patient is referenced by other records (e.g., Medication/Appointment).");
-            }
         }
     }
 
-    // ===== Stored Procedure demo (Step 6: at least one procedure) =====
+    // ===== Stored Procedure demo =====
 
     private static void scheduleAppointmentWithProc(Connection conn) {
         System.out.println("\n--- Schedule Appointment via Stored Procedure ---");
@@ -340,22 +332,11 @@ public class Main {
             System.out.println("Appointment scheduled successfully.");
         } catch (SQLException e) {
             System.err.println("Error scheduling appointment: " + e.getMessage());
-            if ("23000".equals(e.getSQLState())) {
-                System.out.println("Constraint violation (e.g., double-booked doctor or invalid IDs).");
-            }
         }
     }
 
-    // ===== Transactional workflow: move doctor to a different hospital (Step 4) =====
-    /**
-     * Transaction:
-     *  - Verifies doctor exists.
-     *  - Verifies current and new hospitals exist.
-     *  - Verifies a DoctorHospital link exists for (doctor, currentHospital).
-     *  - Updates DoctorHospital to point to new Hospital.
-     *  - Updates Appointment rows to use new HospitalID for that doctor.
-     *  - Uses COMMIT on success; ROLLBACK if anything fails or is invalid.
-     */
+    // ===== Transactional workflow: move doctor to different hospital =====
+
     private static void transactionTransferDoctorHospital(Connection conn) {
         System.out.println("\n--- Transaction: Transfer Doctor to New Hospital ---");
 
@@ -366,7 +347,6 @@ public class Main {
             int currentHospitalId = readInt("Current HospitalID: ");
             int newHospitalId     = readInt("New HospitalID: ");
 
-            // Existence checks (these are all still inside the transaction)
             if (!doctorExists(conn, doctorId)) {
                 System.out.println("No doctor found with that ID. Rolling back.");
                 conn.rollback();
@@ -392,7 +372,6 @@ public class Main {
                 return;
             }
 
-            // 1) Update DoctorHospital mapping
             String updateDH = "UPDATE DoctorHospital SET HospitalID = ? " +
                               "WHERE DoctorID = ? AND HospitalID = ?";
             try (PreparedStatement ps = conn.prepareStatement(updateDH)) {
@@ -403,7 +382,6 @@ public class Main {
                 System.out.println("Updated DoctorHospital rows: " + rows);
             }
 
-            // 2) Update Appointment records to reflect new hospital
             String updateAppt = "UPDATE Appointment " +
                                 "SET HospitalID = ? " +
                                 "WHERE DoctorID = ? AND HospitalID = ?";
@@ -415,7 +393,6 @@ public class Main {
                 System.out.println("Updated Appointment rows: " + rows);
             }
 
-            // Optional: simulate failure to demo rollback explicitly
             int simulate = readInt("Simulate failure and ROLLBACK? (1 = yes, 0 = no): ");
             if (simulate == 1) {
                 System.out.println("Simulated error. Rolling back transaction.");
@@ -442,7 +419,7 @@ public class Main {
         }
     }
 
-    // ===== Helper existence checks for transaction =====
+    // ===== Helper existence checks =====
 
     private static boolean doctorExists(Connection conn, int doctorId) throws SQLException {
         String sql = "SELECT 1 FROM Doctor WHERE DoctorID = ?";
